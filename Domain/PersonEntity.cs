@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Data;
+using System.Text.RegularExpressions;
 
 namespace Domain
 {
@@ -28,6 +29,19 @@ namespace Domain
             PhoneNumber = phoneNumber;
         }
 
+        public void UpdatePersonInfo(string firstName, string lastName, string email, string phoneNumber)
+        {
+            ValidateName(firstName);
+            ValidateLastName(lastName);
+            ValidateEmail(email);
+            ValidatePhoneNumber(phoneNumber);
+
+            FirstName = firstName;
+            LastName = lastName;
+            Email = email;
+            PhoneNumber = phoneNumber;
+        }
+
         private void ValidateCode(string code)
         {
             if (string.IsNullOrWhiteSpace(code))
@@ -35,7 +49,7 @@ namespace Domain
 
             if (code.Length < 3)
                 throw new ArgumentException("El código debe tener al menos 3 caracteres.", nameof(code));
-            
+
             if (code.Length > 20)
                 throw new ArgumentException("El código debe tener maximo 20 caracteres.", nameof(code));
         }
