@@ -13,6 +13,8 @@ namespace Domain
         public string Email { get; private set; } = string.Empty;
         public string PhoneNumber { get; private set; } = string.Empty;
 
+        public string FullName => $"{FirstName} {LastName}".Trim();
+
         public PersonEntity(string code, string firstName, string lastName, string email, string phoneNumber)
         {
             ValidateCode(code);
