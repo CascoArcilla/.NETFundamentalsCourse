@@ -19,7 +19,7 @@ namespace Aplication.UseCases.Persons
             if (person == null) throw new InvalidOperationException("La persona no existe.");
 
             person.UpdatePersonInfo(
-                dto.FristName,
+                dto.FirstName,
                 dto.LastName,
                 dto.Email,
                 dto.PhoneNumber

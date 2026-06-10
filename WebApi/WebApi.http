@@ -1,16 +1,12 @@
 @WebApi_HostAddress = http://localhost:5014
 
-GET {{WebApi_HostAddress}}/api/persons/00000000-0000-0000-0000-000000000000
-Accept: application/json
-
 ###
-
-GET {{WebApi_HostAddress}}/api/persons/c3a2df92-05b1-4034-b069-46e455a84dd3
-Accept: application/json
-
+# Probar endpoints de api persons
 ###
+@API_PERSONS = {{WebApi_HostAddress }}/api/persons
 
-POST {{WebApi_HostAddress}}/api/persons
+### Debe dar un 201 y datos de la persona que se crea, si se ejecuta una segunda vez debe dar error 400
+POST {{API_PERSONS}}
 Content-Type: application/json
 
 {
@@ -20,3 +16,67 @@ Content-Type: application/json
   "email": "marco.polo@example.com",
   "phoneNumber": "4567414595"
 }
+
+### Debe dar un 201 y datos de la persona que se crea, si se ejecuta una segunda vez debe dar error 400
+POST {{API_PERSONS}}
+Content-Type: application/json
+
+{
+  "code": "LOL321",
+  "firstName": "Sebastian",
+  "lastName": "Bidof",
+  "email": "marco.polo@example.com",
+  "phoneNumber": "4567414595"
+}
+
+### Este endpoint debe generar un 404
+GET {{API_PERSONS}}/00000000-0000-0000-0000-000000000000
+Accept: application/json
+
+### Debe dar un 200 y la persona (cambiar guid por uno existete)
+GET {{API_PERSONS}}/c3a2df92-05b1-4034-b069-46e455a84dd3
+Accept: application/json
+
+### Debe dar un 200 y array de personas (cambiar guid por uno existete)
+GET {{API_PERSONS}}/
+Accept: application/json
+
+### Debe dar un 404
+GET {{API_PERSONS}}/code/IOK543
+Accept: application/json
+
+### Debe dar un 200 y la persona (cambiar por el codigo valido)
+GET {{API_PERSONS}}/code/POA321
+Accept: application/json
+
+### Debe devolver un 404
+PUT {{API_PERSONS}}/00000000-0000-0000-0000-000000000000
+Content-Type: application/json
+
+{
+  "id": "00000000-0000-0000-0000-000000000000",
+  "firstName": "Flip",
+  "lastName": "Loco",
+  "email": "flip.loco@example.com",
+  "phoneNumber": "8547531236"
+}
+
+### Debe devolver un 200
+PUT {{API_PERSONS}}/c3a2df92-05b1-4034-b069-46e455a84dd3
+Content-Type: application/json
+
+{
+  "id": "c3a2df92-05b1-4034-b069-46e455a84dd3",
+  "firstName": "Marco",
+  "lastName": "Lopez",
+  "email": "marco.lopez@example.com",
+  "phoneNumber": "4567414595"
+}
+
+### Debe devolver un 404
+DELETE {{API_PERSONS}}/00000000-0000-0000-0000-000000000000
+Content-Type: application/json
+
+### Debe devolver un 204
+DELETE {{API_PERSONS}}/08318c0a-32d9-4600-9d93-bad5dc1c09db
+Content-Type: application/json
