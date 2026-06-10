@@ -1,6 +1,22 @@
 @WebApi_HostAddress = http://localhost:5014
 
-GET {{WebApi_HostAddress}}/weatherforecast/
+GET {{WebApi_HostAddress}}/api/persons/00000000-0000-0000-0000-000000000000
 Accept: application/json
 
 ###
+
+GET {{WebApi_HostAddress}}/api/persons/c3a2df92-05b1-4034-b069-46e455a84dd3
+Accept: application/json
+
+###
+
+POST {{WebApi_HostAddress}}/api/persons
+Content-Type: application/json
+
+{
+  "code": "POA321",
+  "firstName": "Marco",
+  "lastName": "Polo",
+  "email": "marco.polo@example.com",
+  "phoneNumber": "4567414595"
+}

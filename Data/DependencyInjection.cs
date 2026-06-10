@@ -17,7 +17,7 @@ namespace Data
         {
             // Hacer la conexion en a la DB
             services.AddDbContext<AplicationDbContext>(options =>
-            options.UseSqlServer(stringConnection);
+            options.UseSqlServer(stringConnection));
 
             services.AddScoped<IRepository<PersonEntity, Guid>, PersonRepository>();
             services.AddScoped<ICodeRepository<PersonEntity>, PersonRepository>();
