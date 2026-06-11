@@ -10,6 +10,7 @@ namespace Data.Persisten
         }
 
         public DbSet<PersonEntity> Persons { get; set; }
+        public DbSet<VisitEntity> Visits { get; set; }
 
         // Sobre escribir el método OnModelCreating para configurar la entidad PersonEntity,
         // esto permite definir mejor los tipos de datos que se requieren para los campos de
@@ -20,44 +21,44 @@ namespace Data.Persisten
 
             modelBuilder.Entity<PersonEntity>(entity =>
             {
+                entity.ToTable("Persons");
+
                 entity.HasKey(e => e.Id);
-
-                entity.Property(e => e.Id)
-                    .IsRequired()
-                    .ValueGeneratedOnAdd();
-
-                entity.Property(e => e.Code)
-                    .IsRequired()
-                    .HasMaxLength(20);
-
-                entity.HasIndex(e => e.Code)
-                .IsUnique();
-
-                entity.Property(e => e.FirstName)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.LastName)
-                    .IsRequired()
-                    .HasMaxLength(50);
-
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasMaxLength(100);
-
-                entity.Property(e => e.PhoneNumber)
-                    .IsRequired()
-                    .HasMaxLength(15);
-
+                entity.Property(e => e.Id).IsRequired().ValueGeneratedOnAdd();
+                entity.Property(e => e.Code).IsRequired().HasMaxLength(20);
+                entity.HasIndex(e => e.Code).IsUnique();
+                entity.Property(e => e.FirstName).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.LastName).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.Email).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.PhoneNumber).IsRequired().HasMaxLength(15);
+                
                 entity.Ignore(e => e.FullName);
 
-                entity.Property<DateTime>("CreatedAT")
-                    .IsRequired()
-                    .HasDefaultValueSql("GETUTCDATE()");
+                entity.Property<DateTime>("CreatedAT").IsRequired().HasDefaultValueSql("GETUTCDATE()");
+                entity.Property<DateTime>("UpdatedAT").IsRequired().HasDefaultValueSql("GETUTCDATE()");
+            });
 
-                entity.Property<DateTime>("UpdatedAT")
-                    .IsRequired()
-                    .HasDefaultValueSql("GETUTCDATE()");
+            modelBuilder.Entity<VisitEntity>(entity =>
+            {
+                entity.ToTable("Visits");
+
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Id).IsRequired().ValueGeneratedOnAdd();
+                entity.Property(e => e.PersonId).IsRequired();
+                entity.Property(e => e.EntryTime).IsRequired();
+                entity.Property(e => e.ExitTime).IsRequired();
+
+                entity.Ignore(e => e.isActive);
+                entity.Ignore(e => e.Duration);
+
+                entity.HasOne(e => e.Person).WithMany().HasForeignKey(e => e.PersonId).OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasIndex(e => e.PersonId);
+                entity.HasIndex(e => e.EntryTime);
+                entity.HasIndex(e => new { e.PersonId, e.EntryTime });
+
+                entity.Property<DateTime>("CreatedAT").IsRequired().HasDefaultValueSql("GETUTCDATE()");
+                entity.Property<DateTime>("UpdatedAT").IsRequired().HasDefaultValueSql("GETUTCDATE()");
             });
         }
 
